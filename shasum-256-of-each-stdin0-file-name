@@ -1,0 +1,21 @@
+#!/bin/sh
+set -euf -o pipefail
+
+##
+# Calculate the SHA-256 checksum of each standard input null-delimited file name.
+#
+# Example:
+#
+#     $ find . -type f -print0 | shasum-256-of-each-stdin0-file-name
+#     3020588cff7bf2505baf8877db385809151ee1931161a8bfdf00b21ba78551e85e...
+#     c4704ff5315e2333380572d439ca655c8a87fe6d89e7e50a674b85c977e001ed9d...
+#     b43e5d55b6ee3e683a1bc7f6cdb06c539671bbf8f4bcf2f4190287f5e12c847283...
+#
+# Program: shasum-256-of-each-stdin0-file-name
+# Created: 2014-10-17
+# Updated: 2020-02-25
+# License: GPL
+# Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
+##
+
+while read -d $'\0' file_name; do shasum -a 256 "$file_name"; done | awk '{print $1}'
